@@ -1,4 +1,4 @@
-name: Build iOS Local for SideStore
+name: Build iOS Local for SideStore 2
 
 on:
   workflow_dispatch:
