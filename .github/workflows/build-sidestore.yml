@@ -1,0 +1,107 @@
+name: Build iOS Local for SideStore
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.12.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: 📂 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: ⚡ Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🛠️ Prebuild proyecto nativo iOS
+        run: npx expo prebuild --platform ios --clean
+
+      - name: 🍫 Instalar Pods
+        run: |
+          cd ios
+          pod install --repo-update
+
+      - name: 🔎 Detectar workspace y scheme correcto
+        id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ios
+          echo "Contenido de ios/:"
+          ls -la
+
+          WORKSPACE="$(find . -maxdepth 1 -name '*.xcworkspace' -print -quit)"
+          PROJECT="$(find . -maxdepth 1 -name '*.xcodeproj' -print -quit)"
+
+          [ -n "$WORKSPACE" ] || { echo "No workspace found"; exit 1; }
+          [ -n "$PROJECT" ] || { echo "No Xcode project found"; exit 1; }
+
+          SCHEME="$(basename "$PROJECT" .xcodeproj)"
+
+          echo "Workspace encontrado: $WORKSPACE"
+          echo "Scheme principal de la app: $SCHEME"
+
+          echo "workspace=$WORKSPACE" >> "$GITHUB_OUTPUT"
+          echo "scheme=$SCHEME" >> "$GITHUB_OUTPUT"
+
+      - name: 🍎 Build iOS (unsigned, para sideload)
+        run: |
+          set -o pipefail
+          cd ios
+          xcodebuild archive \
+            -workspace "${{ steps.detect.outputs.workspace }}" \
+            -scheme "${{ steps.detect.outputs.scheme }}" \
+            -configuration Release \
+            -archivePath "$GITHUB_WORKSPACE/build/App.xcarchive" \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM=""
+
+      - name: 📦 Empaquetar IPA sin firmar dinámicamente
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ARCHIVE="$GITHUB_WORKSPACE/build/App.xcarchive"
+          APP="$(find "$ARCHIVE" -type d -name '*.app' -print -quit)"
+
+          if [ -z "$APP" ]; then
+            echo "❌ No se encontró ningún archivo .app en el archivo xcarchive:"
+            find "$ARCHIVE" -maxdepth 5 -print
+            exit 1
+          fi
+
+          echo "¡Archivo .app encontrado en: $APP!"
+
+          rm -rf "$RUNNER_TEMP/ipa"
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$APP" "$RUNNER_TEMP/ipa/Payload/"
+
+          cd "$RUNNER_TEMP/ipa"
+          zip -qr "$GITHUB_WORKSPACE/App-unsigned.ipa" Payload
+          echo "✅ IPA empaquetado exitosamente en la raíz del workspace."
+
+      - name: 🚀 Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-sidestore-app
+          path: ./App-unsigned.ipa

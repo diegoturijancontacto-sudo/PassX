@@ -1,30 +1,115 @@
 {
+  "features" : [
+    "refractivity"
+  ],
   "fill" : {
-    "automatic-gradient" : "extended-srgb:0.00000,0.47843,1.00000,1.00000"
+    "linear-gradient" : [
+      "srgb:0.81400,0.81400,0.88600,1.00000",
+      "srgb:0.86910,0.86910,0.91090,1.00000"
+    ],
+    "orientation" : {
+      "start" : {
+        "x" : 0.5,
+        "y" : 0
+      },
+      "stop" : {
+        "x" : 0.5,
+        "y" : 1
+      }
+    }
   },
   "groups" : [
     {
+      "blend-mode" : "normal",
+      "blur-material" : null,
+      "hidden" : false,
       "layers" : [
         {
-          "image-name" : "expo-symbol 2.svg",
-          "name" : "expo-symbol 2",
+          "blend-mode" : "normal",
+          "fill" : {
+            "solid" : "srgb:0.00000,0.53333,1.00000,1.00000"
+          },
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "image.svg",
+          "name" : "image",
+          "opacity" : 1,
           "position" : {
-            "scale" : 1,
+            "scale" : 20.48,
             "translation-in-points" : [
-              1.1008400065293245e-05,
-              -16.046875
+              91.136,
+              78.848
             ]
           }
-        },
-        {
-          "image-name" : "grid.png",
-          "name" : "grid"
         }
       ],
+      "lighting" : "individual",
+      "opacity" : 1,
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
+      "refractivity" : {
+        "depth" : 1,
+        "enabled" : true,
+        "strength" : 1
+      },
       "shadow" : {
         "kind" : "neutral",
         "opacity" : 0.5
       },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "blend-mode" : "normal",
+      "blur-material" : null,
+      "hidden" : false,
+      "layers" : [
+        {
+          "blend-mode" : "normal",
+          "fill" : {
+            "solid" : "srgb:0.55686,0.55686,0.57647,1.00000"
+          },
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "image 2.svg",
+          "name" : "image",
+          "opacity" : 1,
+          "position" : {
+            "scale" : 20.48,
+            "translation-in-points" : [
+              -91.352,
+              -79.20433
+            ]
+          }
+        }
+      ],
+      "lighting" : "individual",
+      "opacity" : 1,
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          0,
+          0
+        ]
+      },
+      "refractivity" : {
+        "depth" : 1,
+        "enabled" : false,
+        "strength" : 0.5
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "specular" : true,
       "translucency" : {
         "enabled" : true,
         "value" : 0.5
