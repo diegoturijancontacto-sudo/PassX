@@ -21,24 +21,24 @@
   "groups" : [
     {
       "blend-mode" : "normal",
-      "blur-material" : null,
+      "blur-material" : 0.26,
       "hidden" : false,
       "layers" : [
         {
           "blend-mode" : "normal",
           "fill" : {
-            "solid" : "srgb:0.00000,0.53333,1.00000,1.00000"
+            "solid" : "srgb:1.00000,0.55294,0.15686,1.00000"
           },
           "glass" : true,
           "hidden" : false,
-          "image-name" : "image.svg",
+          "image-name" : "image.png",
           "name" : "image",
           "opacity" : 1,
           "position" : {
-            "scale" : 20.48,
+            "scale" : 1.16,
             "translation-in-points" : [
-              91.136,
-              78.848
+              0,
+              0
             ]
           }
         }
@@ -55,7 +55,7 @@
       "refractivity" : {
         "depth" : 1,
         "enabled" : true,
-        "strength" : 1
+        "strength" : 0.5
       },
       "shadow" : {
         "kind" : "neutral",
@@ -75,18 +75,18 @@
         {
           "blend-mode" : "normal",
           "fill" : {
-            "solid" : "srgb:0.55686,0.55686,0.57647,1.00000"
+            "solid" : "srgb:0.00000,0.53333,1.00000,1.00000"
           },
           "glass" : true,
           "hidden" : false,
-          "image-name" : "image 2.svg",
+          "image-name" : "image 2.png",
           "name" : "image",
           "opacity" : 1,
           "position" : {
-            "scale" : 20.48,
+            "scale" : 1.2,
             "translation-in-points" : [
-              -91.352,
-              -79.20433
+              0,
+              0
             ]
           }
         }
@@ -101,7 +101,7 @@
         ]
       },
       "refractivity" : {
-        "depth" : 1,
+        "depth" : 0,
         "enabled" : false,
         "strength" : 0.5
       },
